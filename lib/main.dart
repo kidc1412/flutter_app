@@ -57,13 +57,10 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-    
   Widget buildTile(int i) {
     return new GestureDetector(
-
       child: new Column(
         children: <Widget>[
-
           new ListTile(
               title: new Text("Row is $i"),
               subtitle: new Text("Row is $i"),
