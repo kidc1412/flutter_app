@@ -28,69 +28,96 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<int> item = [];
-    for (int i = 0; i < 300; i++){
-      item.add(i);
+    List<Widget> widgets = [];
+    List<int> items = [];
+
+    @override
+    void initState() {
+      // TODO: implement initState
+      super.initState();
+      for (int i = 0; i < 10; i++) {
+        widgets.add(getRow(i));
+        items.add(i);
+      }
     }
 
-    final tiles = item.map((item){
-      return new ListTile(
-        title: new Text(item.toString()),
-        subtitle: new Text(item.toString()),
-        leading: new CircleAvatar(child: new Text(item.toString()),),
+    @override
+    Widget build(BuildContext context) {
+      return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Sample App"),
+          actions: <Widget>[
+            new IconButton(icon: new Icon(Icons.list, color: Colors.white,), onPressed: _details),
+          ],
+        ),
+        body: new ListView.builder(
+            padding: new EdgeInsets.all(10.0),
+            itemCount: widgets.length, //规定列表显示的数量 如果不设置则为无限数量
+            itemBuilder: (BuildContext context, int i){
+              buildTile(i)
+            }
+        ),
       );
-    });
+    }
+    
+    Widget buildTile(int i) {
+      return new GestureDetector(
 
-    final divider = ListTile.divideTiles(tiles: tiles, context: context, color: Colors.red).toList();
+        child: new Column(
+          children: <Widget>[
 
-    return new Scaffold(
-      appBar: new AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: new Text('ListView 分割线测试'),
-
-      ),
-      /*body: new Padding(
-          padding: new EdgeInsets.all(10.0),
-          child: new ListView(
-        children: divider,
-      )),*/
-      body: new ListView.builder(
-          itemCount: 11,
-          itemBuilder: (BuildContext context, int i){
-              return new Column(
-                //crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  /*new Padding(padding: new EdgeInsets.all(20.0),
-                  child: new Text('$i', textAlign: TextAlign.center,),),*/
-                  new ListTile(
-                    title: new Text(i.toString()),
-                    subtitle: new Text(i.toString()),
-                    leading: new CircleAvatar(child: new Text(i.toString()),),
-                  ),
-
-                  getDivider(i),
-                ],
-              );
-
-      }),
-    );
-
-
-  }
-
-  Widget getDivider(int i){
-    if (i < 10)
+            new ListTile(
+                title: new Text("Row is $i"),
+                subtitle: new Text("Row is $i"),
+                trailing: new Icon(Icons.keyboard_arrow_right,color: Colors.grey,),
+                leading: new CircleAvatar(child: new Text(i.toString()))
+            ),
+            //增加分割线
+            _setDivider(i),
+          ],
+        ),
+        //列表item的点击事件
+        onTap: () {
+          setState(() {
+            widgets = new List.from(widgets);
+            widgets.add(buildTile(widgets.length + 1)); //点击item就增加一行数据
+            print('row $i');
+          });
+        },
+      );
+    }
+    
+    //设置最后一条数据不显示分割线
+  _setDivider(int i){
+    if (i < widgets.length - 1)
       return new Divider(color: Colors.red,);
     else
       return new Divider(color: Colors.transparent,);
   }
 
-  /*Widget buildListTile(int i){
-    return new ListTile(
-      title: new Text(i.toString()),
-      leading: new CircleAvatar(child: new Text(i.toString()),),
-      subtitle: new Text(i.toString()),
+  //跳转到详情页
+  void _details(){
+    Navigator.of(context).push(
+      new MaterialPageRoute(
+          builder: (context){
+            final tiles = items.map((item){
+              return new ListTile(
+                title: new Text(item.toString()));
+            });
+            final divider = ListTile.divideTiles(
+              color: Colors.blue,
+              context: context,
+              tiles: tiles,
+            ).toList();
+
+            return new Scaffold(
+              appBar: new AppBar(
+                title: new Text('详情页'),
+              ),
+              body: new ListView(children: divider),
+            );
+          }
+      )
     );
-  }*/
+  }
 }
