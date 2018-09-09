@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'list_page.dart';
 import 'woo_page.dart';
 import 'news_page.dart';
+import 'reorderable_list_demo.dart';
+import 'leave_behind_demo.dart';
 
 void main() => runApp(new MyApp());
 
@@ -29,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  var _tabList = ['List', 'Woo', 'News'];
+  var _tabList = ['List', 'Woo', 'News', 'Swipe', 'Divdier'];
   int _tabIndex = 0;
 
 
@@ -41,6 +43,8 @@ class _MyHomePageState extends State<MyHomePage> {
         new ListPage(),
         new WooPage(),
         new NewsPage(),
+        new ReorderableListDemo(),
+        new LeaveBehindDemo(),
       ],
       index: _tabIndex,
     );
@@ -62,6 +66,12 @@ class _MyHomePageState extends State<MyHomePage> {
           new BottomNavigationBarItem(
               icon: const Icon(Icons.fiber_new),
               title: new Text(_tabList[2])),
+          new BottomNavigationBarItem(
+              icon: const Icon(Icons.ac_unit),
+              title: new Text(_tabList[3])),
+          new BottomNavigationBarItem(
+              icon: const Icon(Icons.widgets),
+              title: new Text(_tabList[4])),
         ],
         currentIndex: _tabIndex,
         onTap: (index){
